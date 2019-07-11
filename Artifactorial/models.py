@@ -23,6 +23,7 @@ from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.urls import reverse
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import datetime, utc
 
@@ -85,9 +86,8 @@ class Directory(models.Model):
         else:
             return "%s (anonymous)" % (self.path)
 
-    @models.permalink
     def get_absolute_url(self):
-        return ("artifacts", [self.path[1:] + '/'])
+        return reverse("artifacts", args=[self.path[1:] + '/'])
 
     def is_visible_to(self, user):
         """
@@ -171,9 +171,8 @@ class Artifact(models.Model):
     def __str__(self):
         return self.path.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return ("artifacts", [self.path.name])
+        return reverse("artifacts", [self.path.name])
 
     def is_visible_to(self, user):
         return self.directory.is_visible_to(user)
@@ -191,6 +190,5 @@ class Share(models.Model):
     def __str__(self):
         return "%s -> %s" % (self.token, self.artifact)
 
-    @models.permalink
     def get_absolute_url(self):
-        return ("shares", [self.token])
+        return reverse("shares", [self.token])
