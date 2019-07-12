@@ -34,7 +34,7 @@ import os
 
 def random_hash():
     """ Create a random string of size 32 """
-    return binascii.b2a_hex(os.urandom(16))
+    return binascii.b2a_hex(os.urandom(16)).decode("utf-8")
 
 
 @python_2_unicode_compatible
